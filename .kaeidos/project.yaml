@@ -1,0 +1,18 @@
+# How KAEIDOS builds, checks, runs and previews this repository. Its agents run these commands
+# inside the dev container; KAEIDOS never guesses a command.
+version: 1
+environment: .devcontainer/devcontainer.json
+components:
+  - name: web
+    path: .
+    setup: npm ci
+    test: npm test
+    lint: npm run lint
+    start: npm start
+    preview:
+      type: web
+      port: 3000
+      healthPath: /health
+sensitivePaths:
+  - '.github/workflows/**'
+  - '.kaeidos/**'
