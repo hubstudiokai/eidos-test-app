@@ -25,6 +25,11 @@ function page(name) {
   <head>
     <meta charset="utf-8" />
     <title>Application de test</title>
+    <style>
+      body {
+        background-color: green;
+      }
+    </style>
   </head>
   <body>
     <h1>${escapeHtml(greeting(name))}</h1>
