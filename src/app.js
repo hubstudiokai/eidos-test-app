@@ -27,7 +27,7 @@ function page(name) {
     <title>Application de test</title>
     <style>
       body {
-        background-color: green;
+        background-color: red;
       }
     </style>
   </head>
