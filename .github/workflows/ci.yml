@@ -24,3 +24,4 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm test
+# Trial 0020, step 6: a change to a workflow, by the owner.
