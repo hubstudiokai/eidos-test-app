@@ -25,17 +25,83 @@ function page(name) {
   <head>
     <meta charset="utf-8" />
     <title>Application de test</title>
-    <style>
-      body {
-        background-color: green;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>${escapeHtml(greeting(name))}</h1>
-  </body>
-</html>
-`;
+      <style>
+       body {
+         background-color: green;
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+       }
+       header {
+         background-color: #333;
+         color: white;
+         padding: 1rem;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         flex-wrap: wrap;
+       }
+       nav {
+         display: flex;
+         gap: 1.5rem;
+       }
+       nav a {
+         color: white;
+         text-decoration: none;
+         font-weight: bold;
+         transition: color 0.3s;
+       }
+       nav a:hover {
+         color: #ccc;
+       }
+       .menu-toggle {
+         display: none;
+         cursor: pointer;
+         font-size: 1.5rem;
+       }
+       @media (max-width: 768px) {
+         nav {
+           flex-direction: column;
+           gap: 0.5rem;
+           position: absolute;
+           top: 100%;
+           left: 0;
+           right: 0;
+           background-color: #222;
+           padding: 1rem;
+           clip-path: circle(0px at 90% 0%);
+           transition: clip-path 0.5s ease-out;
+         }
+         nav.active {
+           clip-path: circle(1000px at 90% 0%);
+         }
+         .menu-toggle {
+           display: block;
+         }
+       }
+      </style>
+    </head>
+    <body>
+      <header>
+        <h1>${escapeHtml(greeting(name))}</h1>
+        <nav id="main-nav">
+          <a href="/">Home</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+        </nav>
+        <button class="menu-toggle" aria-label="Menu">☰</button>
+      </header>
+      <script>
+        const menuToggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('#main-nav');
+        
+        menuToggle.addEventListener('click', () => {
+          nav.classList.toggle('active');
+        });
+      </script>
+    </body>
+  </html>
+  `;
 }
 
 /** Answers one request: `request` and `response` are Node's `http` objects. */
