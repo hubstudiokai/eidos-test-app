@@ -71,15 +71,15 @@ function layout(content, currentPath = '/') {
         color: #38bdf8;
       }
       .btn-login {
-        background-color: #38bdf8;
-        color: #0f172a !important;
+        background-color: #10b981;
+        color: #fff !important;
         padding: 0.5rem 1rem;
         border-radius: 6px;
         font-weight: 600;
         transition: background-color 0.2s;
       }
       .btn-login:hover {
-        background-color: #0ea5e9;
+        background-color: #059669;
       }
       main {
         max-width: 1100px;
