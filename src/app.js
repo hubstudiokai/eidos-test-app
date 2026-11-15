@@ -25,15 +25,85 @@ function page(name) {
   <head>
     <meta charset="utf-8" />
     <title>Application de test</title>
-    <style>
-      body {
-        background-color: blue;
-      }
-    </style>
+      <style>
+       body {
+         background-color: red;
+         font-family: Arial, sans-serif;
+         margin: 0;
+         padding: 0;
+       }
+       .navbar {
+         background-color: rgba(255, 255, 255, 0.8);
+         padding: 1rem;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+       }
+       .logo {
+         font-size: 1.5rem;
+         font-weight: bold;
+       }
+       .nav-links {
+         display: flex;
+         list-style: none;
+         gap: 1.5rem;
+       }
+       .nav-links li a {
+         text-decoration: none;
+         color: #333;
+         font-weight: 500;
+       }
+       .hamburger {
+         display: none;
+         cursor: pointer;
+       }
+       @media (max-width: 768px) {
+         .nav-links {
+           display: none;
+           flex-direction: column;
+           width: 100%;
+           position: absolute;
+           top: 70px;
+           left: 0;
+           background-color: rgba(255, 255, 255, 0.95);
+           padding: 1rem;
+         }
+         .nav-links.active {
+           display: flex;
+         }
+         .nav-links li {
+           padding: 0.5rem 1rem;
+         }
+         .hamburger {
+           display: block;
+         }
+       }
+      </style>
   </head>
-  <body>
-    <h1>${escapeHtml(greeting(name))}</h1>
-  </body>
+<body>
+      <nav class="navbar">
+        <div class="logo">Accueil</div>
+        <div class="hamburger">☰</div>
+        <ul class="nav-links" id="navLinks">
+          <li><a href="/">Accueil</a></li>
+          <li><a href="/salutations">Salutations</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </nav>
+       <div class="content">
+         <h1>${escapeHtml(greeting(name))}  !</h1>
+         <p>Bienvenue sur notre application de test. Voici un peu de contenu pour illustrer la page d'accueil.</p>
+       </div>
+      <script>
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+          navLinks.classList.toggle('active');
+        });
+      </script>
+    </body>
 </html>
 `;
 }
