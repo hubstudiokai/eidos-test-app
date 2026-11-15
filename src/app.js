@@ -70,6 +70,17 @@ function layout(content, currentPath = '/') {
       .nav-links a:hover, .nav-links a.active {
         color: #38bdf8;
       }
+      .btn-login {
+        background-color: #38bdf8;
+        color: #0f172a !important;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background-color 0.2s;
+      }
+      .btn-login:hover {
+        background-color: #0ea5e9;
+      }
       main {
         max-width: 1100px;
         margin: 2rem auto;
@@ -117,6 +128,7 @@ function layout(content, currentPath = '/') {
           <li><a href="/" ${currentPath === '/' ? 'class="active"' : ''}>Accueil</a></li>
           <li><a href="/about" ${currentPath === '/about' ? 'class="active"' : ''}>À propos</a></li>
           <li><a href="/contact" ${currentPath === '/contact' ? 'class="active"' : ''}>Contact</a></li>
+          <li><a href="/login" class="btn-login">Se connecter</a></li>
         </ul>
       </nav>
     </header>
@@ -181,6 +193,9 @@ export function handle(request, response) {
   } else if (url.pathname === '/contact') {
     response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     response.end(contactPage());
+  } else if (url.pathname === '/login') {
+    response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    response.end(layout('<section class="card"><h1>Connexion</h1><p>Page de connexion en cours de développement.</p></section>', '/login'));
   } else if (url.pathname === '/api/greeting') {
     response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     response.end(JSON.stringify({ greeting: greeting(name) }));
