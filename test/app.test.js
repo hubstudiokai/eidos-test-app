@@ -21,14 +21,30 @@ test('shows the greeting page', async () => {
   assert.match(await response.text(), /<h1>Bonjour, Ada !<\/h1>/);
 });
 
-test('shows the navigation bar and page layout', async () => {
+test('shows the navigation bar and page layout with links to separate pages', async () => {
   const response = await fetch(`${base}/`);
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /<nav class="navbar">/);
-  assert.match(html, /href="#accueil"/);
-  assert.match(html, /href="#a-propos"/);
-  assert.match(html, /href="#contact"/);
+  assert.match(html, /href="\/"/);
+  assert.match(html, /href="\/about"/);
+  assert.match(html, /href="\/contact"/);
+});
+
+test('serves the about page', async () => {
+  const response = await fetch(`${base}/about`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<h1>À propos<\/h1>/);
+  assert.match(html, /Cette application démontre/);
+});
+
+test('serves the contact page', async () => {
+  const response = await fetch(`${base}/contact`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<h1>Contact<\/h1>/);
+  assert.match(html, /Pour toute question/);
 });
 
 test('never lets a name inject markup', async () => {
