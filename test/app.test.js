@@ -21,6 +21,16 @@ test('shows the greeting page', async () => {
   assert.match(await response.text(), /<h1>Bonjour, Ada !<\/h1>/);
 });
 
+test('shows the navigation bar and page layout', async () => {
+  const response = await fetch(`${base}/`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<nav class="navbar">/);
+  assert.match(html, /href="#accueil"/);
+  assert.match(html, /href="#a-propos"/);
+  assert.match(html, /href="#contact"/);
+});
+
 test('never lets a name inject markup', async () => {
   const response = await fetch(`${base}/?name=${encodeURIComponent('<script>x</script>')}`);
   const html = await response.text();
