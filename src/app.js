@@ -24,7 +24,7 @@ function page(name) {
 <html lang="fr">
   <head>
     <meta charset="utf-8" />
-    <title>Application de test</title>
+      <title>Application de test - ${escapeHtml(name || '')}</title>
       <style>
        body {
          background-color: green;
@@ -83,7 +83,7 @@ function page(name) {
     </head>
     <body>
       <header>
-        <h1>${escapeHtml(greeting(name))}</h1>
+        <h1>${escapeHtml(greeting(name).replace(/<script.*?>/g, ''))}</h1>
         <nav id="main-nav">
           <a href="/">Home</a>
           <a href="/about">About</a>
