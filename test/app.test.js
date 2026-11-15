@@ -26,6 +26,7 @@ test('shows the navigation bar and page layout with links to separate pages and 
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /<nav class="navbar">/);
+  assert.match(html, /class="menu-toggle"/);
   assert.match(html, /href="\/"/);
   assert.match(html, /href="\/about"/);
   assert.match(html, /href="\/contact"/);
