@@ -49,6 +49,7 @@ function layout(content, currentPath = '/') {
         max-width: 1100px;
         margin: 0 auto;
         padding: 1rem 2rem;
+        position: relative;
       }
       .brand {
         font-size: 1.25rem;
@@ -56,10 +57,28 @@ function layout(content, currentPath = '/') {
         color: #fff;
         text-decoration: none;
       }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        flex-direction: column;
+        gap: 5px;
+        padding: 5px;
+      }
+      .menu-toggle span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: #e2e8f0;
+        border-radius: 2px;
+        transition: 0.3s;
+      }
       .nav-links {
         display: flex;
         list-style: none;
         gap: 1.5rem;
+        align-items: center;
       }
       .nav-links a {
         color: #e2e8f0;
@@ -69,6 +88,17 @@ function layout(content, currentPath = '/') {
       }
       .nav-links a:hover, .nav-links a.active {
         color: #38bdf8;
+      }
+      .btn-login {
+        background-color: #10b981;
+        color: #fff !important;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background-color 0.2s;
+      }
+      .btn-login:hover {
+        background-color: #059669;
       }
       main {
         max-width: 1100px;
@@ -97,14 +127,31 @@ function layout(content, currentPath = '/') {
         font-size: 0.875rem;
       }
       @media (max-width: 600px) {
-        .navbar {
-          flex-direction: column;
-          gap: 1rem;
+        .menu-toggle {
+          display: flex;
         }
         .nav-links {
+          display: none;
           flex-direction: column;
-          align-items: center;
-          gap: 0.75rem;
+          width: 100%;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          background-color: #1e293b;
+          padding: 1rem 2rem 1.5rem 2rem;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+          gap: 1rem;
+          align-items: stretch;
+        }
+        .nav-links.active {
+          display: flex;
+        }
+        .nav-links a {
+          padding: 0.5rem 0;
+          text-align: center;
+        }
+        .btn-login {
+          text-align: center;
         }
       }
     </style>
@@ -113,10 +160,16 @@ function layout(content, currentPath = '/') {
     <header>
       <nav class="navbar">
         <a href="/" class="brand">Mon Application</a>
+        <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <ul class="nav-links">
           <li><a href="/" ${currentPath === '/' ? 'class="active"' : ''}>Accueil</a></li>
           <li><a href="/about" ${currentPath === '/about' ? 'class="active"' : ''}>À propos</a></li>
           <li><a href="/contact" ${currentPath === '/contact' ? 'class="active"' : ''}>Contact</a></li>
+          <li><a href="/login" class="btn-login">Se connecter</a></li>
         </ul>
       </nav>
     </header>
@@ -181,6 +234,9 @@ export function handle(request, response) {
   } else if (url.pathname === '/contact') {
     response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     response.end(contactPage());
+  } else if (url.pathname === '/login') {
+    response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    response.end(layout('<section class="card"><h1>Connexion</h1><p>Page de connexion en cours de développement.</p></section>', '/login'));
   } else if (url.pathname === '/api/greeting') {
     response.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8' });
     response.end(JSON.stringify({ greeting: greeting(name) }));

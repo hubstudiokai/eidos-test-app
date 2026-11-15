@@ -21,14 +21,18 @@ test('shows the greeting page', async () => {
   assert.match(await response.text(), /<h1>Bonjour, Ada !<\/h1>/);
 });
 
-test('shows the navigation bar and page layout with links to separate pages', async () => {
+test('shows the navigation bar and page layout with links to separate pages and green login button', async () => {
   const response = await fetch(`${base}/`);
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /<nav class="navbar">/);
+  assert.match(html, /class="menu-toggle"/);
   assert.match(html, /href="\/"/);
   assert.match(html, /href="\/about"/);
   assert.match(html, /href="\/contact"/);
+  assert.match(html, /href="\/login"/);
+  assert.match(html, /Se connecter/);
+  assert.match(html, /\.btn-login\s*\{[^}]*background-color:\s*#10b981;/s);
 });
 
 test('serves the about page', async () => {
