@@ -70,6 +70,23 @@ test('says it is up', async () => {
   assert.equal(await response.text(), 'ok');
 });
 
+test('serves the notes page and allows adding a note', async () => {
+  const response = await fetch(`${base}/notes`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<h1>Notes<\/h1>/);
+  assert.match(html, /Nombre total de notes/);
+
+  const postResponse = await fetch(`${base}/notes`, {
+    method: 'POST',
+    body: new URLSearchParams({ content: 'Nouvelle note de test' }),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    redirect: 'manual'
+  });
+  assert.equal(postResponse.status, 303);
+  assert.equal(postResponse.headers.get('location'), '/notes');
+});
+
 test('answers 404 to an unknown path and 405 to another method', async () => {
   assert.equal((await fetch(`${base}/nowhere`)).status, 404);
   const posted = await fetch(`${base}/`, { method: 'POST' });

@@ -7,6 +7,9 @@
  */
 
 import { greeting } from './greeting.js';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 /** Escapes the five characters HTML gives a meaning to, so a name can never inject markup. */
 function escapeHtml(text) {
@@ -169,6 +172,7 @@ function layout(content, currentPath = '/') {
           <li><a href="/" ${currentPath === '/' ? 'class="active"' : ''}>Accueil</a></li>
           <li><a href="/about" ${currentPath === '/about' ? 'class="active"' : ''}>À propos</a></li>
           <li><a href="/contact" ${currentPath === '/contact' ? 'class="active"' : ''}>Contact</a></li>
+          <li><a href="/notes" ${currentPath === '/notes' ? 'class="active"' : ''}>Notes</a></li>
           <li><a href="/login" class="btn-login">Se connecter</a></li>
         </ul>
       </nav>
@@ -217,12 +221,49 @@ function contactPage() {
   return layout(content, '/contact');
 }
 
+/** Returns the notes page. */
+async function notesPage(count, error = null) {
+  const content = `
+      <section class="card">
+        <h1>Notes</h1>
+        <p>Nombre total de notes : <strong>${count}</strong></p>
+        ${error ? `<p style="color: red; margin-top: 1rem;">${escapeHtml(error)}</p>` : ''}
+        <form method="POST" action="/notes" style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+          <input type="text" name="content" placeholder="Contenu de la note..." required style="padding: 0.5rem; flex: 1; border: 1px solid #cbd5e1; border-radius: 4px;" />
+          <button type="submit" style="background-color: #2563eb; color: white; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer;">Ajouter une note</button>
+        </form>
+      </section>
+  `;
+  return layout(content, '/notes');
+}
+
 /** Answers one request: `request` and `response` are Node's `http` objects. */
-export function handle(request, response) {
+export async function handle(request, response) {
   const url = new URL(request.url ?? '/', 'http://localhost');
   const name = url.searchParams.get('name');
 
-  if (request.method !== 'GET') {
+  if (url.pathname === '/notes') {
+    if (request.method === 'GET') {
+      const count = await prisma.note.count();
+      response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      response.end(await notesPage(count));
+    } else if (request.method === 'POST') {
+      let body = '';
+      for await (const chunk of request) {
+        body += chunk;
+      }
+      const params = new URLSearchParams(body);
+      const content = params.get('content');
+      if (content) {
+        await prisma.note.create({ data: { content } });
+      }
+      response.writeHead(303, { Location: '/notes' });
+      response.end();
+    } else {
+      response.writeHead(405, { Allow: 'GET, POST', 'Content-Type': 'text/plain; charset=utf-8' });
+      response.end('Method not allowed');
+    }
+  } else if (request.method !== 'GET') {
     response.writeHead(405, { Allow: 'GET', 'Content-Type': 'text/plain; charset=utf-8' });
     response.end('Method not allowed');
   } else if (url.pathname === '/') {
@@ -234,6 +275,27 @@ export function handle(request, response) {
   } else if (url.pathname === '/contact') {
     response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     response.end(contactPage());
+  } else if (url.pathname === '/notes') {
+    if (request.method === 'GET') {
+      const count = await prisma.note.count();
+      response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+      response.end(await notesPage(count));
+    } else if (request.method === 'POST') {
+      let body = '';
+      for await (const chunk of request) {
+        body += chunk;
+      }
+      const params = new URLSearchParams(body);
+      const content = params.get('content');
+      if (content) {
+        await prisma.note.create({ data: { content } });
+      }
+      response.writeHead(303, { Location: '/notes' });
+      response.end();
+    } else {
+      response.writeHead(405, { Allow: 'GET, POST', 'Content-Type': 'text/plain; charset=utf-8' });
+      response.end('Method not allowed');
+    }
   } else if (url.pathname === '/login') {
     response.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
     response.end(layout('<section class="card"><h1>Connexion</h1><p>Page de connexion en cours de développement.</p></section>', '/login'));
