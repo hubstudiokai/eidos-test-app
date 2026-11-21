@@ -39,9 +39,13 @@ function layout(content, currentPath = '/') {
         background-color: #faf9f6;
       }
       header {
-        background-color: #1a1a1a;
+        background-color: rgba(26, 26, 26, 0.95);
+        backdrop-filter: blur(8px);
         color: #f7f4ef;
         border-bottom: 2px solid #d4af37;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
       }
       .navbar {
         display: flex;
@@ -126,6 +130,41 @@ function layout(content, currentPath = '/') {
         right: 0;
         height: 4px;
         background: linear-gradient(90deg, #d4af37, #f3e5ab, #d4af37);
+      }
+      .hero-content {
+        text-align: center;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .hero-title {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+        color: #1a1a1a;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+      .hero-description {
+        font-size: 1.25rem;
+        color: #666055;
+        margin-bottom: 2.5rem;
+        line-height: 1.5;
+      }
+      .hero-actions {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+      }
+      .btn-secondary {
+        padding: 0.75rem 2rem;
+        text-decoration: none;
+        border: 1px solid #d4af37;
+        color: #1a1a1a;
+        border-radius: 4px;
+        font-weight: 600;
+        transition: background-color 0.2s;
+      }
+      .btn-secondary:hover {
+        background-color: #fcfbf8;
       }
       .hero h1, .card h1 {
         font-size: 2.5rem;
@@ -235,16 +274,18 @@ function layout(content, currentPath = '/') {
 /** Returns the greeting page for `name`. */
 function page(name) {
   const content = `
-      <section class="hero" style="text-align: center; padding: 5rem 2rem;">
-        <h1 style="font-size: 3rem; margin-bottom: 1.5rem;">${escapeHtml(greeting(name))}</h1>
-        <p style="font-size: 1.25rem; max-width: 700px; margin: 0 auto 2.5rem auto;">L'excellence digitale à votre service. Propulsez votre activité vers de nouveaux sommets grâce à notre solution haut de gamme.</p>
-        <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 3rem;">
-          <a href="/catalogue" class="btn-login" style="padding: 0.75rem 2rem; font-size: 1rem; text-decoration: none;">Découvrir nos services</a>
-          <a href="/contact" style="padding: 0.75rem 2rem; font-size: 1rem; text-decoration: none; border: 1px solid #d4af37; color: #1a1a1a; border-radius: 4px; font-weight: 600;">Nous contacter</a>
+      <section class="hero">
+        <div class="hero-content">
+          <h1 class="hero-title">${escapeHtml(greeting(name))}</h1>
+          <p class="hero-description">L'excellence digitale à votre service. Propulsez votre activité vers de nouveaux sommets grâce à notre solution haut de gamme.</p>
+          <div class="hero-actions">
+            <a href="/catalogue" class="btn-login">Découvrir nos services</a>
+            <a href="/contact" class="btn-secondary">Nous contacter</a>
+          </div>
         </div>
       </section>
-      <section class="card" style="margin-top: 3rem;">
-        <h2 style="font-size: 2rem; color: #1a1a1a; margin-bottom: 1.5rem; text-align: center;">Pourquoi choisir notre solution ?</h2>
+      <section class="card">
+        <h2>Pourquoi choisir notre solution ?</h2>
         <div class="features-grid">
           <div class="feature-card">
             <h3>Design Sur-Mesure</h3>
