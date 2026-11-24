@@ -10,6 +10,16 @@
   "scripts": {
     "start": "node server.js",
     "test": "node --test",
-    "lint": "node --check server.js && node --check src/greeting.js && node --check src/app.js"
+    "lint": "node --check server.js && node --check src/greeting.js && node --check src/app.js && node --check prisma/seed.js",
+    "seed": "node prisma/seed.js"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.3",
+    "deepmerge-ts": "^8.0.2",
+    "effect": "^3.22.5",
+    "prisma": "^6.19.3"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }
