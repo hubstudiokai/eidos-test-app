@@ -18,21 +18,32 @@ after(() => new Promise((resolve) => server.close(resolve)));
 test('shows the greeting page', async () => {
   const response = await fetch(`${base}/?name=Ada`);
   assert.equal(response.status, 200);
-  assert.match(await response.text(), /<h1>Bonjour, Ada !<\/h1>/);
+  assert.match(await response.text(), /<h1[^>]*>Bonjour, Ada !<\/h1>/);
 });
 
-test('shows the navigation bar and page layout with links to separate pages and green login button', async () => {
+test('shows the navigation bar and page layout with links to separate pages and luxury login button', async () => {
   const response = await fetch(`${base}/`);
   assert.equal(response.status, 200);
   const html = await response.text();
   assert.match(html, /<nav class="navbar">/);
   assert.match(html, /class="menu-toggle"/);
   assert.match(html, /href="\/"/);
+  assert.match(html, /href="\/catalogue"/);
   assert.match(html, /href="\/about"/);
   assert.match(html, /href="\/contact"/);
   assert.match(html, /href="\/login"/);
   assert.match(html, /Se connecter/);
-  assert.match(html, /\.btn-login\s*\{[^}]*background-color:\s*#10b981;/s);
+  assert.match(html, /\.btn-login\s*\{[^}]*background:\s*linear-gradient/s);
+  assert.match(html, /<section class="hero"/);
+  assert.match(html, /L'excellence digitale/);
+});
+
+test('serves the catalogue page', async () => {
+  const response = await fetch(`${base}/catalogue`);
+  assert.equal(response.status, 200);
+  const html = await response.text();
+  assert.match(html, /<h1>Nos Services<\/h1>/);
+  assert.match(html, /Conseil Premium/);
 });
 
 test('serves the about page', async () => {
