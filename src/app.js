@@ -370,7 +370,6 @@ async function notesPage(count, error = null) {
   `;
   return layout(content, '/notes');
 }
-}
 
 /** Answers one request: `request` and `response` are Node's `http` objects. */
 export async function handle(request, response) {
